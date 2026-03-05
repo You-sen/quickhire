@@ -21,6 +21,9 @@ export class Job {
   description: string;
 
   @Prop({ required: false })
+  requirements?: string;
+
+  @Prop({ required: false })
   salary?: string;
 
   @Prop({ required: false })
