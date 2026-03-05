@@ -25,6 +25,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3001;
   await app.listen(port);
   console.log(`🚀 QuickHire API running on http://localhost:${port}/api`);
+  console.log(`📊 Health check: http://localhost:${port}/api`);
 }
 
 bootstrap();
