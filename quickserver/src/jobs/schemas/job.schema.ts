@@ -5,10 +5,10 @@ export type JobDocument = Job & Document;
 
 @Schema({ timestamps: true })
 export class Job {
-  @Prop({ required: true })
+  @Prop({ required: true, trim: true })
   title: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, trim: true })
   company: string;
 
   @Prop({ required: true })
