@@ -23,6 +23,10 @@ export class UpdateJobDto {
 
   @IsString()
   @IsOptional()
+  requirements?: string;
+
+  @IsString()
+  @IsOptional()
   salary?: string;
 
   @IsString()
