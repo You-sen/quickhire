@@ -26,8 +26,9 @@ export class CreateJobDto {
   salary?: string;
 
   @IsString()
+  @IsNotEmpty()
   @IsOptional()
-  type?: string;
+  type?: string; // Full-time, Part-time, Contract, Internship
 
   @IsBoolean()
   @IsOptional()
