@@ -13,10 +13,14 @@ export class ApplicationsService {
   ) {}
 
   async create(createApplicationDto: CreateApplicationDto): Promise<Application> {
-    // Verify job exists
+    // Verify job exists and is active
     try {
-      await this.jobsService.findOne(createApplicationDto.jobId);
+      const job = await this.jobsService.findOne(createApplicationDto.jobId);
+      if (!job.isActive) {
+        throw new BadRequestException('This job is no longer accepting applications');
+      }
     } catch (error) {
+      if (error instanceof BadRequestException) throw error;
       throw new BadRequestException('Invalid job ID');
     }
 
