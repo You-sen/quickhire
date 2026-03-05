@@ -8,10 +8,10 @@ export class Application {
   @Prop({ type: Types.ObjectId, ref: 'Job', required: true })
   jobId: Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ required: true, trim: true })
   name: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, lowercase: true, trim: true })
   email: string;
 
   @Prop({ required: true })
