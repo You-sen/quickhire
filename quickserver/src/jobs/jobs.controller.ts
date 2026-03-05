@@ -48,6 +48,7 @@ export class JobsController {
     const categories = await this.jobsService.getCategories();
     return {
       success: true,
+      count: categories.length,
       data: categories,
     };
   }
@@ -57,6 +58,7 @@ export class JobsController {
     const locations = await this.jobsService.getLocations();
     return {
       success: true,
+      count: locations.length,
       data: locations,
     };
   }
