@@ -28,7 +28,7 @@ export class ApplicationsService {
     const filter = jobId ? { jobId } : {};
     return this.applicationModel
       .find(filter)
-      .populate('jobId')
+      .populate('jobId', 'title company location') // Only populate needed fields
       .sort({ createdAt: -1 })
       .exec();
   }
