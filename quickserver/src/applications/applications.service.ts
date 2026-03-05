@@ -36,7 +36,7 @@ export class ApplicationsService {
   async findOne(id: string): Promise<Application> {
     const application = await this.applicationModel
       .findById(id)
-      .populate('jobId')
+      .populate('jobId', 'title company location')
       .exec();
     
     if (!application) {
