@@ -15,7 +15,7 @@ export class JobsService {
   }
 
   async findAll(query?: { search?: string; category?: string; location?: string }): Promise<Job[]> {
-    const filter: any = { isActive: true };
+    const filter: Record<string, any> = { isActive: true };
 
     if (query?.search) {
       filter.$or = [
