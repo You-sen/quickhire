@@ -38,7 +38,12 @@ cd quickserver
 npm install
 ```
 
-3. Environment variables are already configured in `.env` file:
+3. Create a `.env` file based on `.env.example`:
+```bash
+cp .env.example .env
+```
+
+4. Update the `.env` file with your MongoDB connection string:
 ```
 PORT=3001
 MONGODB_URI=your_mongodb_connection_string_here
