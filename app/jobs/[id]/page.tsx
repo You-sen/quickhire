@@ -77,28 +77,47 @@ export default function JobDetailPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Application submitted:', {
-        jobId: job?._id,
-        jobTitle: job?.title,
-        ...formData
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+      const response = await fetch(`${apiUrl}/applications`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          jobId: job?._id,
+          name: formData.name,
+          email: formData.email,
+          resumeLink: formData.resumeUrl,
+          coverNote: formData.coverNote,
+        }),
       });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setSubmitSuccess(true);
+        
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setSubmitSuccess(false);
+          setShowApplicationForm(false);
+          setFormData({
+            name: '',
+            email: '',
+            resumeUrl: '',
+            coverNote: ''
+          });
+        }, 3000);
+      } else {
+        alert('Failed to submit application. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      alert('An error occurred. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      setSubmitSuccess(true);
-      
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setSubmitSuccess(false);
-        setShowApplicationForm(false);
-        setFormData({
-          name: '',
-          email: '',
-          resumeUrl: '',
-          coverNote: ''
-        });
-      }, 3000);
-    }, 1500);
+    }
   };
 
   if (!job) {
