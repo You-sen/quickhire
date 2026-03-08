@@ -4,6 +4,12 @@ A full-stack job board application built with Next.js, NestJS, and MongoDB. Feat
 
 ![QuickHire](public/hero-header.png)
 
+## 🌐 Live Deployment
+
+- **Frontend:** [https://quickhire-client-ruddy.vercel.app/](https://quickhire-client-ruddy.vercel.app/)
+- **Backend API:** [https://quickhire-six.vercel.app/api](https://quickhire-six.vercel.app/api)
+- **API Documentation:** [https://quickhire-six.vercel.app/api/docs](https://quickhire-six.vercel.app/api/docs)
+
 ## ✨ Features
 
 ### Frontend
@@ -247,17 +253,18 @@ cp .env.local.example .env.local
 **Required Variables:**
 ```env
 # Backend API URL (must start with NEXT_PUBLIC_ to be accessible in browser)
+# Local development
 NEXT_PUBLIC_API_URL=http://localhost:3001/api
+
+# Production (optional - has fallback)
+NEXT_PUBLIC_API_URL=https://quickhire-six.vercel.app/api
 ```
 
-**For Production:**
-```env
-NEXT_PUBLIC_API_URL=https://your-api-domain.com/api
-```
+> **Note:** The frontend has a fallback to the production API URL, so this variable is optional in production.
 
 ### Backend (quickserver/.env)
 
-The backend requires environment variables for database connection and server configuration.
+The backend requires environment variables for database connection, server configuration, and CORS.
 
 **Setup:**
 ```bash
@@ -275,7 +282,16 @@ PORT=3001
 
 # Environment
 NODE_ENV=development
+
+# CORS Configuration (comma-separated list of allowed origins)
+# Local development
+CORS_ORIGINS=http://localhost:3000,http://localhost:3001
+
+# Production (optional - has fallback)
+CORS_ORIGINS=http://localhost:3000,http://localhost:3001,https://quickhire-client-ruddy.vercel.app
 ```
+
+> **Note:** The backend has a fallback CORS configuration that includes the production frontend URL, so `CORS_ORIGINS` is optional in production.
 
 **MongoDB Connection Options:**
 
@@ -304,18 +320,51 @@ NODE_ENV=development
 MONGODB_URI=mongodb+srv://prod-user:prod-pass@production-cluster.mongodb.net/quickhire
 PORT=3001
 NODE_ENV=production
+CORS_ORIGINS=https://quickhire-client-ruddy.vercel.app
 ```
 
 ### Environment Variables Summary
 
-| Variable | File | Required | Description | Example |
-|----------|------|----------|-------------|---------|
-| `NEXT_PUBLIC_API_URL` | `.env.local` | ✅ Yes | Backend API endpoint | `http://localhost:3001/api` |
-| `MONGODB_URI` | `quickserver/.env` | ✅ Yes | MongoDB connection string | `mongodb://localhost:27017/quickhire` |
+| Variable | File | Required | Description | Default/Fallback |
+|----------|------|----------|-------------|------------------|
+| `NEXT_PUBLIC_API_URL` | `.env.local` | ⚠️ Optional | Backend API endpoint | `https://quickhire-six.vercel.app/api` |
+| `MONGODB_URI` | `quickserver/.env` | ✅ Yes | MongoDB connection string | None |
 | `PORT` | `quickserver/.env` | ⚠️ Optional | Backend server port | `3001` |
 | `NODE_ENV` | `quickserver/.env` | ⚠️ Optional | Environment mode | `development` |
+| `CORS_ORIGINS` | `quickserver/.env` | ⚠️ Optional | Allowed CORS origins (comma-separated) | `http://localhost:3000,http://localhost:3001,https://quickhire-client-ruddy.vercel.app` |
 
 > **Security Note:** Never commit `.env` or `.env.local` files to version control. They are already in `.gitignore`.
+
+### Vercel Deployment Environment Variables
+
+For detailed instructions on setting up environment variables in Vercel, see [VERCEL_ENV_SETUP.md](VERCEL_ENV_SETUP.md).
+
+**Backend (quickhire-six.vercel.app):**
+- `MONGODB_URI` - Your MongoDB Atlas connection string (required)
+- `CORS_ORIGINS` - Optional, has fallback in code
+- `PORT` - Optional, Vercel sets this automatically
+- `NODE_ENV` - Optional, defaults to `production`
+
+**Frontend (quickhire-client-ruddy.vercel.app):**
+- `NEXT_PUBLIC_API_URL` - Optional, has fallback to production API URL
+
+### Debugging Environment Variables
+
+The application includes console logging to help debug configuration issues:
+
+**Backend logs (on startup):**
+```
+🔒 CORS Configuration:
+   - CORS_ORIGINS env: NOT SET (using fallback)
+   - Allowed origins: ['http://localhost:3000', 'http://localhost:3001', 'https://quickhire-client-ruddy.vercel.app']
+```
+
+**Frontend logs (in browser console):**
+```
+🔗 [ComponentName] Fetching from: https://quickhire-six.vercel.app/api
+```
+
+Check these logs to verify your configuration is correct.
 
 ## 🔌 API Endpoints
 
