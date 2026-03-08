@@ -9,7 +9,11 @@ async function bootstrap() {
   // Enable CORS for frontend
   const corsOrigins = process.env.CORS_ORIGINS 
     ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
-    : ['http://localhost:3000'];
+    : ['http://localhost:3000', 'http://localhost:3001', 'https://quickhire-client-ruddy.vercel.app'];
+  
+  console.log('🔒 CORS Configuration:');
+  console.log('   - CORS_ORIGINS env:', process.env.CORS_ORIGINS || 'NOT SET (using fallback)');
+  console.log('   - Allowed origins:', corsOrigins);
   
   app.enableCors({
     origin: corsOrigins,

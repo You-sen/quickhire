@@ -39,7 +39,9 @@ interface JobFormData {
   logoColor: string;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://quickhire-six.vercel.app/api';
+
+console.log('🔗 [Admin] API URL configured as:', API_URL);
 
 export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -99,7 +101,7 @@ export default function AdminPage() {
       const data = await response.json();
       setJobs(data.data || data);
     } catch (error) {
-      console.error('Error fetching jobs:', error);
+      console.error('❌ [Admin] Error fetching jobs:', error);
       showAlert('error', 'Failed to fetch jobs');
     } finally {
       setLoading(false);
@@ -199,7 +201,7 @@ export default function AdminPage() {
       resetForm();
       fetchJobs();
     } catch (error) {
-      console.error('Error saving job:', error);
+      console.error('❌ [Admin] Error saving job:', error);
       showAlert('error', `Failed to ${editingJob ? 'update' : 'create'} job`);
     } finally {
       setLoading(false);
@@ -240,7 +242,7 @@ export default function AdminPage() {
       showAlert('success', 'Job deleted successfully');
       fetchJobs();
     } catch (error) {
-      console.error('Error deleting job:', error);
+      console.error('❌ [Admin] Error deleting job:', error);
       showAlert('error', 'Failed to delete job');
     } finally {
       setLoading(false);

@@ -75,7 +75,8 @@ export default function LatestJobsSection() {
 
   const fetchLatestJobs = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://quickhire-six.vercel.app/api';
+      console.log('🔗 [LatestJobs] Fetching from:', apiUrl);
       const response = await fetch(`${apiUrl}/jobs`);
       const result = await response.json();
       
@@ -84,9 +85,9 @@ export default function LatestJobsSection() {
         const latestJobs = result.data.filter((job: Job) => job.isActive).slice(0, 8);
         setJobs(latestJobs);
       }
-    } catch (error) {
-      console.error('Error fetching latest jobs:', error);
-    } finally {
+      } catch (error) {
+        console.error('❌ [LatestJobs] Error fetching jobs:', error);
+      } finally {
       setLoading(false);
     }
   };

@@ -53,7 +53,8 @@ export default function JobDetailPage() {
 
   const fetchJob = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://quickhire-six.vercel.app/api';
+      console.log('🔗 [JobDetail] Fetching job from:', apiUrl);
       const response = await fetch(`${apiUrl}/jobs/${jobId}`);
       const result = await response.json();
       
@@ -61,7 +62,7 @@ export default function JobDetailPage() {
         setJob(result.data);
       }
     } catch (error) {
-      console.error('Error fetching job:', error);
+      console.error('❌ [JobDetail] Error fetching job:', error);
     }
   };
 
@@ -78,7 +79,8 @@ export default function JobDetailPage() {
     setIsSubmitting(true);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://quickhire-six.vercel.app/api';
+      console.log('🔗 [JobDetail] Submitting application to:', apiUrl);
       const response = await fetch(`${apiUrl}/applications`, {
         method: 'POST',
         headers: {
@@ -113,7 +115,7 @@ export default function JobDetailPage() {
         alert('Failed to submit application. Please try again.');
       }
     } catch (error) {
-      console.error('Error submitting application:', error);
+      console.error('❌ [JobDetail] Error submitting application:', error);
       alert('An error occurred. Please try again.');
     } finally {
       setIsSubmitting(false);

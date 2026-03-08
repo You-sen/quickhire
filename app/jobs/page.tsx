@@ -45,7 +45,8 @@ function JobsContent() {
 
   const fetchJobs = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://quickhire-six.vercel.app/api';
+      console.log('🔗 [JobsPage] Fetching from:', apiUrl);
       const response = await fetch(`${apiUrl}/jobs`);
       const result = await response.json();
       
@@ -70,7 +71,7 @@ function JobsContent() {
         }
       }
     } catch (error) {
-      console.error('Error fetching jobs:', error);
+      console.error('❌ [JobsPage] Error fetching jobs:', error);
     } finally {
       setLoading(false);
     }

@@ -98,7 +98,8 @@ export default function FeaturedJobsSection() {
 
   const fetchFeaturedJobs = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://quickhire-six.vercel.app/api';
+      console.log('🔗 [FeaturedJobs] Fetching from:', apiUrl);
       const response = await fetch(`${apiUrl}/jobs`);
       const result = await response.json();
       
@@ -108,7 +109,7 @@ export default function FeaturedJobsSection() {
         setJobs(featuredJobs);
       }
     } catch (error) {
-      console.error('Error fetching featured jobs:', error);
+      console.error('❌ [FeaturedJobs] Error fetching jobs:', error);
     } finally {
       setLoading(false);
     }
