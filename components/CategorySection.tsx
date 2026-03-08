@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
@@ -6,6 +9,11 @@ interface CategoryCardProps {
   title: string;
   jobCount: string;
   iconPath: string;
+}
+
+interface CategoryCount {
+  category: string;
+  count: number;
 }
 
 function CategoryCard({ title, jobCount, iconPath }: CategoryCardProps) {
@@ -45,16 +53,53 @@ function CategoryCard({ title, jobCount, iconPath }: CategoryCardProps) {
 }
 
 export default function CategorySection() {
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
+  const [loading, setLoading] = useState(true);
+
   const categories = [
-    { title: "Design", jobCount: "235 jobs available", iconPath: "/icons/design.svg" },
-    { title: "Sales", jobCount: "756 jobs available", iconPath: "/icons/sales.svg" },
-    { title: "Marketing", jobCount: "140 jobs available", iconPath: "/icons/marketing.svg" },
-    { title: "Finance", jobCount: "325 jobs available", iconPath: "/icons/finance.svg" },
-    { title: "Technology", jobCount: "436 jobs available", iconPath: "/icons/technology.svg" },
-    { title: "Engineering", jobCount: "542 jobs available", iconPath: "/icons/engineering.svg" },
-    { title: "Business", jobCount: "211 jobs available", iconPath: "/icons/business.svg" },
-    { title: "Human Resource", jobCount: "346 jobs available", iconPath: "/icons/human-resource.svg" },
+    { title: "Design", iconPath: "/icons/design.svg" },
+    { title: "Sales", iconPath: "/icons/sales.svg" },
+    { title: "Marketing", iconPath: "/icons/marketing.svg" },
+    { title: "Finance", iconPath: "/icons/finance.svg" },
+    { title: "Technology", iconPath: "/icons/technology.svg" },
+    { title: "Engineering", iconPath: "/icons/engineering.svg" },
+    { title: "Business", iconPath: "/icons/business.svg" },
+    { title: "Human Resource", iconPath: "/icons/human-resource.svg" },
   ];
+
+  useEffect(() => {
+    fetchCategoryCounts();
+  }, []);
+
+  const fetchCategoryCounts = async () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://quickhire-six.vercel.app/api';
+      console.log('🔗 [CategorySection] Fetching from:', apiUrl);
+      const response = await fetch(`${apiUrl}/jobs`);
+      const result = await response.json();
+      
+      if (result.success) {
+        // Count jobs by category (only active jobs)
+        const counts: Record<string, number> = {};
+        result.data.forEach((job: any) => {
+          if (job.isActive) {
+            const category = job.category;
+            counts[category] = (counts[category] || 0) + 1;
+          }
+        });
+        setCategoryCounts(counts);
+      }
+    } catch (error) {
+      console.error('❌ [CategorySection] Error fetching category counts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getJobCount = (category: string) => {
+    const count = categoryCounts[category] || 0;
+    return `${count} job${count !== 1 ? 's' : ''} available`;
+  };
 
   return (
     <section className="bg-white py-12 md:py-16 lg:py-[72px]">
@@ -87,7 +132,7 @@ export default function CategorySection() {
             <CategoryCard
               key={index}
               title={category.title}
-              jobCount={category.jobCount}
+              jobCount={loading ? 'Loading...' : getJobCount(category.title)}
               iconPath={category.iconPath}
             />
           ))}
