@@ -210,11 +210,25 @@ quickhire/
 | GET | `/api/jobs/categories` | Get all categories |
 | GET | `/api/jobs/locations` | Get all locations |
 
+### Applications
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/applications` | Get all applications |
+| GET | `/api/applications?jobId=:id` | Get applications for a job |
+| GET | `/api/applications/:id` | Get single application |
+| POST | `/api/applications` | Submit job application |
+| DELETE | `/api/applications/:id` | Delete application |
+
 ### Query Parameters
 
+**Jobs:**
 - `search` - Search in title, company, description
 - `category` - Filter by category
 - `location` - Filter by location
+
+**Applications:**
+- `jobId` - Filter applications by job ID
 
 ### Response Format
 
@@ -288,6 +302,7 @@ node seed-jobs.js
 
 ### Via API
 ```bash
+# Create a job
 curl -X POST http://localhost:3001/api/jobs \
   -H "Content-Type: application/json" \
   -d '{
@@ -300,6 +315,17 @@ curl -X POST http://localhost:3001/api/jobs \
     "salary": "$100k - $150k",
     "isActive": true,
     "isFeatured": false
+  }'
+
+# Submit a job application
+curl -X POST http://localhost:3001/api/applications \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jobId": "507f1f77bcf86cd799439011",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "resumeLink": "https://example.com/resume.pdf",
+    "coverNote": "I am excited to apply for this position..."
   }'
 ```
 
