@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
@@ -22,7 +22,7 @@ interface Job {
   logoColor?: string;
 }
 
-export default function JobsPage() {
+function JobsContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
   const typeParam = searchParams.get('type'); // 'featured' or 'latest'
@@ -289,5 +289,21 @@ export default function JobsPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function JobsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-12">
+          <div className="text-center">Loading...</div>
+        </div>
+        <Footer />
+      </div>
+    }>
+      <JobsContent />
+    </Suspense>
   );
 }
