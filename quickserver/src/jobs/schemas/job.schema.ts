@@ -21,7 +21,13 @@ export class Job {
   description: string;
 
   @Prop({ required: false })
-  requirements?: string;
+  fullDescription?: string;
+
+  @Prop({ type: [String], required: false })
+  responsibilities?: string[];
+
+  @Prop({ type: [String], required: false })
+  requirements?: string[];
 
   @Prop({ required: false })
   salary?: string;
@@ -31,6 +37,18 @@ export class Job {
 
   @Prop({ default: true })
   isActive: boolean;
+
+  @Prop({ default: false })
+  isFeatured?: boolean;
+
+  @Prop({ required: false })
+  postedDate?: string;
+
+  @Prop({ required: false })
+  logo?: string;
+
+  @Prop({ required: false })
+  logoColor?: string;
 }
 
 export const JobSchema = SchemaFactory.createForClass(Job);
