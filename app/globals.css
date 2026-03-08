@@ -1,26 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@600&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --color-primary-50: #f8f9fe;
+  --color-primary-100: #f0f2fd;
+  --color-primary-500: #4640de;
+  --color-primary-600: #3730a3;
+  --color-primary-700: #312e81;
+  
+  --color-secondary-500: #ffb836;
+  
+  --color-dark-900: #202430;
+  --color-dark-800: #25324b;
+  
+  --color-gray-50: #f8f8fd;
+  --color-gray-100: #f6f6f6;
+  --color-gray-200: #e4e5e7;
+  --color-gray-300: #d6ddeb;
+  --color-gray-500: #7c8493;
+  --color-gray-600: #515b6f;
+  
+  --font-family-sans: 'Epilogue', system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Epilogue', system-ui, sans-serif;
+}
+
+/* Category card icon styling - exact Figma colors */
+.category-card .icon-svg {
+  filter: none;
+}
+
+/* Normal state: purple strokes #4640DE */
+.category-card:not(.group:hover) .icon-svg path,
+.category-card:not(.group:hover) .icon-svg g path,
+.category-card:not(.group:hover) .icon-svg line,
+.category-card:not(.group:hover) .icon-svg circle,
+.category-card:not(.group:hover) .icon-svg rect {
+  stroke: #4640DE !important;
+}
+
+/* Hover state: white strokes */
+.category-card:hover .icon-svg path,
+.category-card:hover .icon-svg g path,
+.category-card:hover .icon-svg line,
+.category-card:hover .icon-svg circle,
+.category-card:hover .icon-svg rect {
+  stroke: white !important;
+}
+
+/* Handle fill colors if any */
+.category-card:not(.group:hover) .icon-svg path[fill]:not([fill="none"]),
+.category-card:not(.group:hover) .icon-svg g path[fill]:not([fill="none"]) {
+  fill: #4640DE !important;
+}
+
+.category-card:hover .icon-svg path[fill]:not([fill="none"]),
+.category-card:hover .icon-svg g path[fill]:not([fill="none"]) {
+  fill: white !important;
+}
+
+/* Smooth transition */
+.category-card .icon-svg path,
+.category-card .icon-svg g path,
+.category-card .icon-svg line,
+.category-card .icon-svg circle,
+.category-card .icon-svg rect {
+  transition: stroke 0.3s ease, fill 0.3s ease;
+}
+
+/* CTA Section diagonal corners - all screen sizes */
+.cta-diagonal-corners {
+  clip-path: polygon(40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+}
+
+/* Larger diagonal corners on desktop */
+@media (min-width: 1024px) {
+  .cta-diagonal-corners {
+    clip-path: polygon(80px 0, 100% 0, 100% calc(100% - 80px), calc(100% - 80px) 100%, 0 100%, 0 80px);
+  }
+}
+
+/* Hero section diagonal corner - desktop only */
+@media (min-width: 1024px) {
+  .hero-section {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 129px), calc(100% - 129px) 100%, 0 100%);
+  }
+}
+
+/* Custom scrollbar styles */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Firefox scrollbar */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f1f1f1;
 }
