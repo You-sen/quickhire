@@ -134,16 +134,52 @@ quickhire/
 
 4. **Set up environment variables**
 
-   **Frontend** (`.env.local`):
+   **Frontend Environment Variables**
+   
+   Create a `.env.local` file in the root directory:
+   ```bash
+   # Copy from example
+   cp .env.local.example .env.local
+   ```
+   
+   Edit `.env.local` and add:
    ```env
+   # Backend API URL
    NEXT_PUBLIC_API_URL=http://localhost:3001/api
    ```
+   
+   > **Note:** The `NEXT_PUBLIC_` prefix makes this variable accessible in the browser.
 
-   **Backend** (`quickserver/.env`):
-   ```env
-   MONGODB_URI=mongodb://localhost:27017/quickhire
-   PORT=3001
+   **Backend Environment Variables**
+   
+   Create a `.env` file in the `quickserver` directory:
+   ```bash
+   cd quickserver
+   cp .env.example .env
    ```
+   
+   Edit `quickserver/.env` and configure:
+   ```env
+   # MongoDB Connection
+   MONGODB_URI=mongodb://localhost:27017/quickhire
+   # For MongoDB Atlas, use:
+   # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/quickhire
+   
+   # Server Port
+   PORT=3001
+   
+   # Node Environment
+   NODE_ENV=development
+   ```
+   
+   **Environment Variables Reference:**
+   
+   | Variable | Location | Required | Description | Default |
+   |----------|----------|----------|-------------|---------|
+   | `NEXT_PUBLIC_API_URL` | Frontend | Yes | Backend API base URL | `http://localhost:3001/api` |
+   | `MONGODB_URI` | Backend | Yes | MongoDB connection string | `mongodb://localhost:27017/quickhire` |
+   | `PORT` | Backend | No | Backend server port | `3001` |
+   | `NODE_ENV` | Backend | No | Environment mode | `development` |
 
 5. **Start MongoDB**
    ```bash
@@ -195,6 +231,91 @@ quickhire/
   - Edit existing jobs
   - Delete jobs
   - Search and filter jobs
+
+## 🔐 Environment Variables
+
+### Frontend (.env.local)
+
+The frontend requires environment variables to connect to the backend API.
+
+**Setup:**
+```bash
+# Create from example
+cp .env.local.example .env.local
+```
+
+**Required Variables:**
+```env
+# Backend API URL (must start with NEXT_PUBLIC_ to be accessible in browser)
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+```
+
+**For Production:**
+```env
+NEXT_PUBLIC_API_URL=https://your-api-domain.com/api
+```
+
+### Backend (quickserver/.env)
+
+The backend requires environment variables for database connection and server configuration.
+
+**Setup:**
+```bash
+cd quickserver
+cp .env.example .env
+```
+
+**Required Variables:**
+```env
+# MongoDB Connection String
+MONGODB_URI=mongodb://localhost:27017/quickhire
+
+# Server Port
+PORT=3001
+
+# Environment
+NODE_ENV=development
+```
+
+**MongoDB Connection Options:**
+
+1. **Local MongoDB:**
+   ```env
+   MONGODB_URI=mongodb://localhost:27017/quickhire
+   ```
+
+2. **MongoDB Atlas (Cloud):**
+   ```env
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/quickhire?retryWrites=true&w=majority
+   ```
+   
+   Replace:
+   - `username` - Your MongoDB Atlas username
+   - `password` - Your MongoDB Atlas password
+   - `cluster` - Your cluster name
+
+3. **MongoDB with Authentication:**
+   ```env
+   MONGODB_URI=mongodb://username:password@localhost:27017/quickhire?authSource=admin
+   ```
+
+**For Production:**
+```env
+MONGODB_URI=mongodb+srv://prod-user:prod-pass@production-cluster.mongodb.net/quickhire
+PORT=3001
+NODE_ENV=production
+```
+
+### Environment Variables Summary
+
+| Variable | File | Required | Description | Example |
+|----------|------|----------|-------------|---------|
+| `NEXT_PUBLIC_API_URL` | `.env.local` | ✅ Yes | Backend API endpoint | `http://localhost:3001/api` |
+| `MONGODB_URI` | `quickserver/.env` | ✅ Yes | MongoDB connection string | `mongodb://localhost:27017/quickhire` |
+| `PORT` | `quickserver/.env` | ⚠️ Optional | Backend server port | `3001` |
+| `NODE_ENV` | `quickserver/.env` | ⚠️ Optional | Environment mode | `development` |
+
+> **Security Note:** Never commit `.env` or `.env.local` files to version control. They are already in `.gitignore`.
 
 ## 🔌 API Endpoints
 
